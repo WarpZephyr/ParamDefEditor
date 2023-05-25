@@ -54,7 +54,7 @@ namespace ParamDefEditor
 
         private void MenuOpen_Click(object sender, EventArgs e)
         {
-            string[] paths = PathUtil.GetFilePaths("C:\\Users", "Select Param Defs");
+            string[] paths = PathUtil.GetFilePaths("C:\\Users", "Select Param Defs", "Def file (*.def)|*.def|All files (*.*)|*.*");
             if (paths == null)
             {
                 StatusLabel.Text = "Canceled opening defs.";
