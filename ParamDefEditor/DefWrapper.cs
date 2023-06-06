@@ -103,7 +103,10 @@ namespace ParamDefEditor
         /// </summary>
         internal void Write()
         {
-            Def.Write(Path);
+            if (Name.EndsWith(".xml"))
+                Def.XmlSerialize(Path);
+            else
+                Def.Write(Path);
         }
 
         /// <summary>

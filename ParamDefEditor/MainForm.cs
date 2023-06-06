@@ -295,6 +295,9 @@ namespace ParamDefEditor
                 try
                 {
                     PARAMDEF paramdef = PARAMDEF.Read(path);
+                    foreach (var field in paramdef.Fields)
+                        if (field.InternalName == null)
+                            field.InternalName = field.DisplayName;
                     paramdef.XmlSerialize($"{path}.xml");
                 }
                 catch (InvalidDataException ex)
@@ -309,8 +312,8 @@ namespace ParamDefEditor
 
         private void MenuXmlToDef_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Currently broken.");
-            /*string[] paths = PathUtil.GetFilePaths("C:\\Users", "Select Xmls to export to Def", "Xml file (*.xml)|*.xml|All files (*.*)|*.*");
+            //MessageBox.Show("Currently broken.");
+            string[] paths = PathUtil.GetFilePaths("C:\\Users", "Select Xmls to export to Def", "Xml file (*.xml)|*.xml|All files (*.*)|*.*");
             if (paths == null)
                 return;
 
@@ -318,7 +321,7 @@ namespace ParamDefEditor
             int fail = 0;
             foreach (string path in paths)
             {
-                string newPath = Path.GetFileNameWithoutExtension(path);
+                string newPath = $"{Path.GetDirectoryName(path)}\\{Path.GetFileNameWithoutExtension(path)}";
                 if (File.Exists(newPath))
                 {
                     exist++;
@@ -337,7 +340,7 @@ namespace ParamDefEditor
                 }
             }
 
-            StatusLabel.Text = $"Exported {paths.Length - (exist + fail)} xmls to def, failed to export {fail} files, {exist} defs already existed on the export path.";*/
+            StatusLabel.Text = $"Exported {paths.Length - (exist + fail)} xmls to def, failed to export {fail} files, {exist} defs already existed on the export path.";
         }
 
         private void ContextOpen_Click(object sender, EventArgs e)
@@ -423,7 +426,7 @@ namespace ParamDefEditor
             foreach (var field in selectedDef.Def.Fields)
             {
                 var fieldWrapper = new FieldWrapper(field);
-                DefDGV.Rows.Add(new object[] { fieldWrapper.Type, fieldWrapper });
+                DefDGV.Rows.Add(new object[] { fieldWrapper.Type, fieldWrapper, fieldWrapper.Description });
             }
         }
 
@@ -467,7 +470,7 @@ namespace ParamDefEditor
             {
                 case 0:
                     string enumStr = DefDGV.CurrentRow.Cells[0].Value.ToString();
-                    bool parsed = Enum.TryParse(enumStr, false, out PARAMDEF.DefType type);
+                    bool parsed = Enum.TryParse(enumStr, false, out DefType type);
                     if (!parsed)
                     {
                         DefDGV.CurrentRow.Cells[0].Value = FieldTypeStore;
@@ -477,9 +480,16 @@ namespace ParamDefEditor
                     DefStore.Modified = true;
                     break;
                 case 1:
-                    string description = DefDGV.CurrentRow.Cells[1].Value.ToString();
-                    FieldStore.Name = description;
+                    var value1 = DefDGV.CurrentRow.Cells[1].Value;
+                    string displayname = value1 != null ? value1.ToString() : "";
+                    FieldStore.Name = displayname;
                     DefDGV.CurrentRow.Cells[1].Value = FieldStore;
+                    DefStore.Modified = true;
+                    break;
+                case 2:
+                    var value2 = DefDGV.CurrentRow.Cells[2].Value;
+                    string description = value2 != null ? value2.ToString() : "";
+                    FieldStore.Description = description;
                     DefStore.Modified = true;
                     break;
             }
@@ -584,7 +594,13 @@ namespace ParamDefEditor
 
                 try
                 {
-                    var defWrapper = new DefWrapper(PARAMDEF.Read(path), path);
+                    PARAMDEF def;
+                    if (path.EndsWith(".xml"))
+                        def = PARAMDEF.XmlDeserialize(path);
+                    else
+                        def = PARAMDEF.Read(path);
+
+                    var defWrapper = new DefWrapper(def, path);
                     FileDGV.Rows.Add(new object[] { defWrapper, defWrapper.Type });
                     count++;
                 }

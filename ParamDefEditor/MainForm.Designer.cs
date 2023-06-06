@@ -43,6 +43,10 @@
             this.MenuClose = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuCloseAll = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuCreate = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuFileSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.MenuExport = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuDefToXml = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuXmlToDef = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuCopyDefs = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuPasteDefs = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,8 +68,6 @@
             this.ContextCopyDefs = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextPasteDefs = new System.Windows.Forms.ToolStripMenuItem();
             this.DefDGV = new System.Windows.Forms.DataGridView();
-            this.celltype = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.celldescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DefContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ContextDeleteFields = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextCopyFields = new System.Windows.Forms.ToolStripMenuItem();
@@ -73,10 +75,9 @@
             this.ContextCreateField = new System.Windows.Forms.ToolStripMenuItem();
             this.MainToolStrip = new System.Windows.Forms.ToolStrip();
             this.StatusLabel = new System.Windows.Forms.ToolStripLabel();
-            this.MenuFileSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.MenuExport = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuDefToXml = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuXmlToDef = new System.Windows.Forms.ToolStripMenuItem();
+            this.celltype = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.celldisname = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.celldescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MainFormMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MainSplitContainer)).BeginInit();
             this.MainSplitContainer.Panel1.SuspendLayout();
@@ -97,7 +98,7 @@
             this.MenuEdit});
             this.MainFormMenuStrip.Location = new System.Drawing.Point(0, 0);
             this.MainFormMenuStrip.Name = "MainFormMenuStrip";
-            this.MainFormMenuStrip.Size = new System.Drawing.Size(840, 24);
+            this.MainFormMenuStrip.Size = new System.Drawing.Size(1215, 24);
             this.MainFormMenuStrip.TabIndex = 0;
             this.MainFormMenuStrip.Text = "MainMenuStrip";
             // 
@@ -185,6 +186,45 @@
             this.MenuCreate.Text = "Create";
             this.MenuCreate.ToolTipText = "Create a new param def.";
             this.MenuCreate.Click += new System.EventHandler(this.MenuCreate_Click);
+            // 
+            // MenuFileSeparator1
+            // 
+            this.MenuFileSeparator1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.MenuFileSeparator1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.MenuFileSeparator1.Name = "MenuFileSeparator1";
+            this.MenuFileSeparator1.Size = new System.Drawing.Size(191, 6);
+            // 
+            // MenuExport
+            // 
+            this.MenuExport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.MenuExport.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuDefToXml,
+            this.MenuXmlToDef});
+            this.MenuExport.ForeColor = System.Drawing.SystemColors.Control;
+            this.MenuExport.Name = "MenuExport";
+            this.MenuExport.Size = new System.Drawing.Size(194, 22);
+            this.MenuExport.Text = "Export";
+            this.MenuExport.ToolTipText = "Export various file types to other file types.";
+            // 
+            // MenuDefToXml
+            // 
+            this.MenuDefToXml.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.MenuDefToXml.ForeColor = System.Drawing.SystemColors.Control;
+            this.MenuDefToXml.Name = "MenuDefToXml";
+            this.MenuDefToXml.Size = new System.Drawing.Size(180, 22);
+            this.MenuDefToXml.Text = "Def to Xml";
+            this.MenuDefToXml.ToolTipText = "Export param def to xml.";
+            this.MenuDefToXml.Click += new System.EventHandler(this.MenuDefToXml_Click);
+            // 
+            // MenuXmlToDef
+            // 
+            this.MenuXmlToDef.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.MenuXmlToDef.ForeColor = System.Drawing.SystemColors.Control;
+            this.MenuXmlToDef.Name = "MenuXmlToDef";
+            this.MenuXmlToDef.Size = new System.Drawing.Size(180, 22);
+            this.MenuXmlToDef.Text = "Xml to Def";
+            this.MenuXmlToDef.ToolTipText = "Export xml to param def.";
+            this.MenuXmlToDef.Click += new System.EventHandler(this.MenuXmlToDef_Click);
             // 
             // MenuEdit
             // 
@@ -280,8 +320,8 @@
             // MainSplitContainer.Panel2
             // 
             this.MainSplitContainer.Panel2.Controls.Add(this.DefDGV);
-            this.MainSplitContainer.Size = new System.Drawing.Size(840, 417);
-            this.MainSplitContainer.SplitterDistance = 330;
+            this.MainSplitContainer.Size = new System.Drawing.Size(1215, 417);
+            this.MainSplitContainer.SplitterDistance = 477;
             this.MainSplitContainer.TabIndex = 1;
             // 
             // FileDGV
@@ -328,7 +368,7 @@
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.FileDGV.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
-            this.FileDGV.Size = new System.Drawing.Size(330, 417);
+            this.FileDGV.Size = new System.Drawing.Size(477, 417);
             this.FileDGV.TabIndex = 0;
             this.FileDGV.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.FileDGV_CellValueChanged);
             this.FileDGV.SelectionChanged += new System.EventHandler(this.FileDGV_SelectionChanged);
@@ -472,6 +512,7 @@
             this.DefDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DefDGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.celltype,
+            this.celldisname,
             this.celldescription});
             this.DefDGV.ContextMenuStrip = this.DefContextMenu;
             dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -496,24 +537,12 @@
             dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.DefDGV.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
-            this.DefDGV.Size = new System.Drawing.Size(506, 417);
+            this.DefDGV.Size = new System.Drawing.Size(734, 417);
             this.DefDGV.TabIndex = 0;
             this.DefDGV.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.DefDGV_CellBeginEdit);
             this.DefDGV.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.DefDGV_CellValueChanged);
             this.DefDGV.SelectionChanged += new System.EventHandler(this.DefDGV_SelectionChanged);
             this.DefDGV.KeyDown += new System.Windows.Forms.KeyEventHandler(this.DefDGV_KeyDown);
-            // 
-            // celltype
-            // 
-            this.celltype.HeaderText = "Type";
-            this.celltype.Name = "celltype";
-            this.celltype.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // celldescription
-            // 
-            this.celldescription.HeaderText = "Description";
-            this.celldescription.Name = "celldescription";
-            this.celldescription.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // DefContextMenu
             // 
@@ -578,7 +607,7 @@
             this.StatusLabel});
             this.MainToolStrip.Location = new System.Drawing.Point(0, 441);
             this.MainToolStrip.Name = "MainToolStrip";
-            this.MainToolStrip.Size = new System.Drawing.Size(840, 25);
+            this.MainToolStrip.Size = new System.Drawing.Size(1215, 25);
             this.MainToolStrip.TabIndex = 1;
             // 
             // StatusLabel
@@ -587,44 +616,25 @@
             this.StatusLabel.Name = "StatusLabel";
             this.StatusLabel.Size = new System.Drawing.Size(0, 22);
             // 
-            // MenuFileSeparator1
+            // celltype
             // 
-            this.MenuFileSeparator1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.MenuFileSeparator1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.MenuFileSeparator1.Name = "MenuFileSeparator1";
-            this.MenuFileSeparator1.Size = new System.Drawing.Size(191, 6);
+            this.celltype.FillWeight = 35.23328F;
+            this.celltype.HeaderText = "Type";
+            this.celltype.Name = "celltype";
+            this.celltype.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
-            // MenuExport
+            // celldisname
             // 
-            this.MenuExport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.MenuExport.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuDefToXml,
-            this.MenuXmlToDef});
-            this.MenuExport.ForeColor = System.Drawing.SystemColors.Control;
-            this.MenuExport.Name = "MenuExport";
-            this.MenuExport.Size = new System.Drawing.Size(194, 22);
-            this.MenuExport.Text = "Export";
-            this.MenuExport.ToolTipText = "Export various file types to other file types.";
+            this.celldisname.FillWeight = 91.60655F;
+            this.celldisname.HeaderText = "DisplayName";
+            this.celldisname.Name = "celldisname";
+            this.celldisname.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
-            // MenuDefToXml
+            // celldescription
             // 
-            this.MenuDefToXml.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.MenuDefToXml.ForeColor = System.Drawing.SystemColors.Control;
-            this.MenuDefToXml.Name = "MenuDefToXml";
-            this.MenuDefToXml.Size = new System.Drawing.Size(180, 22);
-            this.MenuDefToXml.Text = "Def to Xml";
-            this.MenuDefToXml.ToolTipText = "Export param def to xml.";
-            this.MenuDefToXml.Click += new System.EventHandler(this.MenuDefToXml_Click);
-            // 
-            // MenuXmlToDef
-            // 
-            this.MenuXmlToDef.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.MenuXmlToDef.ForeColor = System.Drawing.SystemColors.Control;
-            this.MenuXmlToDef.Name = "MenuXmlToDef";
-            this.MenuXmlToDef.Size = new System.Drawing.Size(180, 22);
-            this.MenuXmlToDef.Text = "Xml to Def";
-            this.MenuXmlToDef.ToolTipText = "Export xml to param def.";
-            this.MenuXmlToDef.Click += new System.EventHandler(this.MenuXmlToDef_Click);
+            this.celldescription.FillWeight = 173.1602F;
+            this.celldescription.HeaderText = "Description";
+            this.celldescription.Name = "celldescription";
             // 
             // MainForm
             // 
@@ -632,10 +642,11 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
-            this.ClientSize = new System.Drawing.Size(840, 466);
+            this.ClientSize = new System.Drawing.Size(1215, 466);
             this.Controls.Add(this.MainSplitContainer);
             this.Controls.Add(this.MainFormMenuStrip);
             this.Controls.Add(this.MainToolStrip);
+            this.ForeColor = System.Drawing.SystemColors.Control;
             this.Name = "MainForm";
             this.Text = "Param Def Editor";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
@@ -677,8 +688,6 @@
         private System.Windows.Forms.ToolStripMenuItem MenuEdit;
         private System.Windows.Forms.DataGridViewTextBoxColumn filename;
         private System.Windows.Forms.DataGridViewTextBoxColumn deftype;
-        private System.Windows.Forms.DataGridViewTextBoxColumn celltype;
-        private System.Windows.Forms.DataGridViewTextBoxColumn celldescription;
         private System.Windows.Forms.ContextMenuStrip FileContextMenu;
         private System.Windows.Forms.ToolStripMenuItem ContextOpen;
         private System.Windows.Forms.ToolStripMenuItem ContextSave;
@@ -703,6 +712,9 @@
         private System.Windows.Forms.ToolStripMenuItem MenuExport;
         private System.Windows.Forms.ToolStripMenuItem MenuDefToXml;
         private System.Windows.Forms.ToolStripMenuItem MenuXmlToDef;
+        private System.Windows.Forms.DataGridViewTextBoxColumn celltype;
+        private System.Windows.Forms.DataGridViewTextBoxColumn celldisname;
+        private System.Windows.Forms.DataGridViewTextBoxColumn celldescription;
     }
 }
 

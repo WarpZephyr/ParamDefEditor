@@ -7,7 +7,7 @@ namespace ParamDefEditor
     {
         internal PARAMDEF.Field Field { get; set; }
 
-        internal PARAMDEF.DefType Type
+        internal DefType Type
         {
             get => Field.DisplayType;
             set
@@ -19,13 +19,13 @@ namespace ParamDefEditor
         internal string Name
         {
             get => Field.DisplayName;
-            set
-            {
-                if (value == null)
-                    throw new NullReferenceException($"Field name may not be null.");
+            set => Field.DisplayName = value ?? throw new NullReferenceException($"Field name may not be null.");
+        }
 
-                Field.DisplayName = value;
-            }
+        internal string Description
+        {
+            get => Field.Description ?? "";
+            set => Field.Description = value ?? throw new NullReferenceException($"Field description may not be null.");
         }
 
         internal FieldWrapper(PARAMDEF.Field field)

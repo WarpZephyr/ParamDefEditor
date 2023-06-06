@@ -346,6 +346,7 @@
             this.Controls.Add(this.VersionCombobox);
             this.ForeColor = System.Drawing.SystemColors.Control;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "NewDefForm";
             this.Text = "Create a new Param Def";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.NewDefForm_FormClosing);
