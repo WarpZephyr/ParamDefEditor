@@ -44,9 +44,12 @@
             this.MenuCloseAll = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuCreate = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuFileSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.MenuImport = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuImportText = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuExport = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuDefToXml = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuXmlToDef = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuExportXml = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuExportDef = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuExportTxt = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuCopyDefs = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuPasteDefs = new System.Windows.Forms.ToolStripMenuItem();
@@ -68,6 +71,9 @@
             this.ContextCopyDefs = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextPasteDefs = new System.Windows.Forms.ToolStripMenuItem();
             this.DefDGV = new System.Windows.Forms.DataGridView();
+            this.celltype = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.celldisname = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.celldescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DefContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ContextDeleteFields = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextCopyFields = new System.Windows.Forms.ToolStripMenuItem();
@@ -75,9 +81,6 @@
             this.ContextCreateField = new System.Windows.Forms.ToolStripMenuItem();
             this.MainToolStrip = new System.Windows.Forms.ToolStrip();
             this.StatusLabel = new System.Windows.Forms.ToolStripLabel();
-            this.celltype = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.celldisname = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.celldescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MainFormMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MainSplitContainer)).BeginInit();
             this.MainSplitContainer.Panel1.SuspendLayout();
@@ -113,6 +116,7 @@
             this.MenuCloseAll,
             this.MenuCreate,
             this.MenuFileSeparator1,
+            this.MenuImport,
             this.MenuExport});
             this.MenuFile.ForeColor = System.Drawing.SystemColors.Control;
             this.MenuFile.Name = "MenuFile";
@@ -194,37 +198,68 @@
             this.MenuFileSeparator1.Name = "MenuFileSeparator1";
             this.MenuFileSeparator1.Size = new System.Drawing.Size(191, 6);
             // 
+            // MenuImport
+            // 
+            this.MenuImport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.MenuImport.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuImportText});
+            this.MenuImport.ForeColor = System.Drawing.SystemColors.Control;
+            this.MenuImport.Name = "MenuImport";
+            this.MenuImport.Size = new System.Drawing.Size(194, 22);
+            this.MenuImport.Text = "Import";
+            this.MenuImport.ToolTipText = "Import various kinds of data into defs.";
+            // 
+            // MenuImportText
+            // 
+            this.MenuImportText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.MenuImportText.ForeColor = System.Drawing.SystemColors.Control;
+            this.MenuImportText.Name = "MenuImportText";
+            this.MenuImportText.Size = new System.Drawing.Size(180, 22);
+            this.MenuImportText.Text = "Text";
+            this.MenuImportText.ToolTipText = "Import dumped text back into defs.";
+            // 
             // MenuExport
             // 
             this.MenuExport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.MenuExport.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuDefToXml,
-            this.MenuXmlToDef});
+            this.MenuExportXml,
+            this.MenuExportDef,
+            this.MenuExportTxt});
             this.MenuExport.ForeColor = System.Drawing.SystemColors.Control;
             this.MenuExport.Name = "MenuExport";
             this.MenuExport.Size = new System.Drawing.Size(194, 22);
             this.MenuExport.Text = "Export";
             this.MenuExport.ToolTipText = "Export various file types to other file types.";
             // 
-            // MenuDefToXml
+            // MenuExportXml
             // 
-            this.MenuDefToXml.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.MenuDefToXml.ForeColor = System.Drawing.SystemColors.Control;
-            this.MenuDefToXml.Name = "MenuDefToXml";
-            this.MenuDefToXml.Size = new System.Drawing.Size(180, 22);
-            this.MenuDefToXml.Text = "Def to Xml";
-            this.MenuDefToXml.ToolTipText = "Export param def to xml.";
-            this.MenuDefToXml.Click += new System.EventHandler(this.MenuDefToXml_Click);
+            this.MenuExportXml.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.MenuExportXml.ForeColor = System.Drawing.SystemColors.Control;
+            this.MenuExportXml.Name = "MenuExportXml";
+            this.MenuExportXml.Size = new System.Drawing.Size(180, 22);
+            this.MenuExportXml.Text = "Xml";
+            this.MenuExportXml.ToolTipText = "Export defs to xml.";
+            this.MenuExportXml.Click += new System.EventHandler(this.MenuExportXml_Click);
             // 
-            // MenuXmlToDef
+            // MenuExportDef
             // 
-            this.MenuXmlToDef.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.MenuXmlToDef.ForeColor = System.Drawing.SystemColors.Control;
-            this.MenuXmlToDef.Name = "MenuXmlToDef";
-            this.MenuXmlToDef.Size = new System.Drawing.Size(180, 22);
-            this.MenuXmlToDef.Text = "Xml to Def";
-            this.MenuXmlToDef.ToolTipText = "Export xml to param def.";
-            this.MenuXmlToDef.Click += new System.EventHandler(this.MenuXmlToDef_Click);
+            this.MenuExportDef.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.MenuExportDef.ForeColor = System.Drawing.SystemColors.Control;
+            this.MenuExportDef.Name = "MenuExportDef";
+            this.MenuExportDef.Size = new System.Drawing.Size(180, 22);
+            this.MenuExportDef.Text = "Def";
+            this.MenuExportDef.ToolTipText = "Export loaded defs to def.";
+            this.MenuExportDef.Click += new System.EventHandler(this.MenuExportDef_Click);
+            // 
+            // MenuExportTxt
+            // 
+            this.MenuExportTxt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.MenuExportTxt.ForeColor = System.Drawing.SystemColors.Control;
+            this.MenuExportTxt.Name = "MenuExportTxt";
+            this.MenuExportTxt.Size = new System.Drawing.Size(180, 22);
+            this.MenuExportTxt.Text = "Txt";
+            this.MenuExportTxt.ToolTipText = "Export loaded defs to txt.";
+            this.MenuExportTxt.Click += new System.EventHandler(this.MenuExportTxt_Click);
             // 
             // MenuEdit
             // 
@@ -246,8 +281,7 @@
             this.MenuCopyDefs.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.MenuCopyDefs.ForeColor = System.Drawing.SystemColors.Control;
             this.MenuCopyDefs.Name = "MenuCopyDefs";
-            this.MenuCopyDefs.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.MenuCopyDefs.Size = new System.Drawing.Size(229, 22);
+            this.MenuCopyDefs.Size = new System.Drawing.Size(187, 22);
             this.MenuCopyDefs.Text = "Copy Selected Defs";
             this.MenuCopyDefs.ToolTipText = "Copy the currently selected param defs.";
             this.MenuCopyDefs.Click += new System.EventHandler(this.MenuCopyDefs_Click);
@@ -257,8 +291,7 @@
             this.MenuPasteDefs.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.MenuPasteDefs.ForeColor = System.Drawing.SystemColors.Control;
             this.MenuPasteDefs.Name = "MenuPasteDefs";
-            this.MenuPasteDefs.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.MenuPasteDefs.Size = new System.Drawing.Size(229, 22);
+            this.MenuPasteDefs.Size = new System.Drawing.Size(187, 22);
             this.MenuPasteDefs.Text = "Paste Selected Defs";
             this.MenuPasteDefs.ToolTipText = "Paste copied param defs if any were copied.";
             this.MenuPasteDefs.Click += new System.EventHandler(this.MenuPasteDefs_Click);
@@ -268,8 +301,7 @@
             this.MenuDeleteFields.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.MenuDeleteFields.ForeColor = System.Drawing.SystemColors.Control;
             this.MenuDeleteFields.Name = "MenuDeleteFields";
-            this.MenuDeleteFields.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
-            this.MenuDeleteFields.Size = new System.Drawing.Size(229, 22);
+            this.MenuDeleteFields.Size = new System.Drawing.Size(187, 22);
             this.MenuDeleteFields.Text = "Delete Selected Fields";
             this.MenuDeleteFields.ToolTipText = "Delete the currently selected param def fields.";
             this.MenuDeleteFields.Click += new System.EventHandler(this.MenuDeleteFields_Click);
@@ -279,8 +311,7 @@
             this.MenuCopyFields.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.MenuCopyFields.ForeColor = System.Drawing.SystemColors.Control;
             this.MenuCopyFields.Name = "MenuCopyFields";
-            this.MenuCopyFields.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.MenuCopyFields.Size = new System.Drawing.Size(229, 22);
+            this.MenuCopyFields.Size = new System.Drawing.Size(187, 22);
             this.MenuCopyFields.Text = "Copy Selected Fields";
             this.MenuCopyFields.ToolTipText = "Copy the currently selected param def fields.";
             this.MenuCopyFields.Click += new System.EventHandler(this.MenuCopyFields_Click);
@@ -290,8 +321,7 @@
             this.MenuPasteFields.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.MenuPasteFields.ForeColor = System.Drawing.SystemColors.Control;
             this.MenuPasteFields.Name = "MenuPasteFields";
-            this.MenuPasteFields.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.MenuPasteFields.Size = new System.Drawing.Size(229, 22);
+            this.MenuPasteFields.Size = new System.Drawing.Size(187, 22);
             this.MenuPasteFields.Text = "Paste Selected Fields";
             this.MenuPasteFields.ToolTipText = "Paste copied param def fields if any were copied.";
             this.MenuPasteFields.Click += new System.EventHandler(this.MenuPasteFields_Click);
@@ -301,8 +331,7 @@
             this.MenuCreateField.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.MenuCreateField.ForeColor = System.Drawing.SystemColors.Control;
             this.MenuCreateField.Name = "MenuCreateField";
-            this.MenuCreateField.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.MenuCreateField.Size = new System.Drawing.Size(229, 22);
+            this.MenuCreateField.Size = new System.Drawing.Size(187, 22);
             this.MenuCreateField.Text = "Create Field";
             this.MenuCreateField.ToolTipText = "Create a new param def field.";
             this.MenuCreateField.Click += new System.EventHandler(this.MenuCreateField_Click);
@@ -368,11 +397,11 @@
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.FileDGV.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            this.FileDGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.FileDGV.Size = new System.Drawing.Size(477, 417);
             this.FileDGV.TabIndex = 0;
             this.FileDGV.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.FileDGV_CellValueChanged);
             this.FileDGV.SelectionChanged += new System.EventHandler(this.FileDGV_SelectionChanged);
-            this.FileDGV.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FileDGV_KeyDown);
             // 
             // filename
             // 
@@ -542,79 +571,6 @@
             this.DefDGV.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.DefDGV_CellBeginEdit);
             this.DefDGV.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.DefDGV_CellValueChanged);
             this.DefDGV.SelectionChanged += new System.EventHandler(this.DefDGV_SelectionChanged);
-            this.DefDGV.KeyDown += new System.Windows.Forms.KeyEventHandler(this.DefDGV_KeyDown);
-            // 
-            // DefContextMenu
-            // 
-            this.DefContextMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
-            this.DefContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ContextDeleteFields,
-            this.ContextCopyFields,
-            this.ContextPasteFields,
-            this.ContextCreateField});
-            this.DefContextMenu.Name = "FileContextMenu";
-            this.DefContextMenu.Size = new System.Drawing.Size(230, 92);
-            // 
-            // ContextDeleteFields
-            // 
-            this.ContextDeleteFields.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.ContextDeleteFields.ForeColor = System.Drawing.SystemColors.Control;
-            this.ContextDeleteFields.Name = "ContextDeleteFields";
-            this.ContextDeleteFields.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
-            this.ContextDeleteFields.Size = new System.Drawing.Size(229, 22);
-            this.ContextDeleteFields.Text = "Delete Selected Fields";
-            this.ContextDeleteFields.ToolTipText = "Delete the currently selected param def fields.";
-            this.ContextDeleteFields.Click += new System.EventHandler(this.ContextDeleteFields_Click);
-            // 
-            // ContextCopyFields
-            // 
-            this.ContextCopyFields.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.ContextCopyFields.ForeColor = System.Drawing.SystemColors.Control;
-            this.ContextCopyFields.Name = "ContextCopyFields";
-            this.ContextCopyFields.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.ContextCopyFields.Size = new System.Drawing.Size(229, 22);
-            this.ContextCopyFields.Text = "Copy Selected Fields";
-            this.ContextCopyFields.ToolTipText = "Copy the currently selected param def fields.";
-            this.ContextCopyFields.Click += new System.EventHandler(this.ContextCopyFields_Click);
-            // 
-            // ContextPasteFields
-            // 
-            this.ContextPasteFields.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.ContextPasteFields.ForeColor = System.Drawing.SystemColors.Control;
-            this.ContextPasteFields.Name = "ContextPasteFields";
-            this.ContextPasteFields.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.ContextPasteFields.Size = new System.Drawing.Size(229, 22);
-            this.ContextPasteFields.Text = "Paste Selected Fields";
-            this.ContextPasteFields.ToolTipText = "Paste copied param def fields if any were copied.";
-            this.ContextPasteFields.Click += new System.EventHandler(this.ContextPasteFields_Click);
-            // 
-            // ContextCreateField
-            // 
-            this.ContextCreateField.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.ContextCreateField.ForeColor = System.Drawing.SystemColors.Control;
-            this.ContextCreateField.Name = "ContextCreateField";
-            this.ContextCreateField.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.ContextCreateField.Size = new System.Drawing.Size(229, 22);
-            this.ContextCreateField.Text = "Create Field";
-            this.ContextCreateField.ToolTipText = "Create a new param def field.";
-            this.ContextCreateField.Click += new System.EventHandler(this.ContextCreateField_Click);
-            // 
-            // MainToolStrip
-            // 
-            this.MainToolStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(41)))), ((int)(((byte)(41)))));
-            this.MainToolStrip.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.MainToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.StatusLabel});
-            this.MainToolStrip.Location = new System.Drawing.Point(0, 441);
-            this.MainToolStrip.Name = "MainToolStrip";
-            this.MainToolStrip.Size = new System.Drawing.Size(1215, 25);
-            this.MainToolStrip.TabIndex = 1;
-            // 
-            // StatusLabel
-            // 
-            this.StatusLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.StatusLabel.Name = "StatusLabel";
-            this.StatusLabel.Size = new System.Drawing.Size(0, 22);
             // 
             // celltype
             // 
@@ -635,6 +591,74 @@
             this.celldescription.FillWeight = 173.1602F;
             this.celldescription.HeaderText = "Description";
             this.celldescription.Name = "celldescription";
+            // 
+            // DefContextMenu
+            // 
+            this.DefContextMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
+            this.DefContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ContextDeleteFields,
+            this.ContextCopyFields,
+            this.ContextPasteFields,
+            this.ContextCreateField});
+            this.DefContextMenu.Name = "FileContextMenu";
+            this.DefContextMenu.Size = new System.Drawing.Size(188, 92);
+            // 
+            // ContextDeleteFields
+            // 
+            this.ContextDeleteFields.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.ContextDeleteFields.ForeColor = System.Drawing.SystemColors.Control;
+            this.ContextDeleteFields.Name = "ContextDeleteFields";
+            this.ContextDeleteFields.Size = new System.Drawing.Size(187, 22);
+            this.ContextDeleteFields.Text = "Delete Selected Fields";
+            this.ContextDeleteFields.ToolTipText = "Delete the currently selected param def fields.";
+            this.ContextDeleteFields.Click += new System.EventHandler(this.ContextDeleteFields_Click);
+            // 
+            // ContextCopyFields
+            // 
+            this.ContextCopyFields.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.ContextCopyFields.ForeColor = System.Drawing.SystemColors.Control;
+            this.ContextCopyFields.Name = "ContextCopyFields";
+            this.ContextCopyFields.Size = new System.Drawing.Size(187, 22);
+            this.ContextCopyFields.Text = "Copy Selected Fields";
+            this.ContextCopyFields.ToolTipText = "Copy the currently selected param def fields.";
+            this.ContextCopyFields.Click += new System.EventHandler(this.ContextCopyFields_Click);
+            // 
+            // ContextPasteFields
+            // 
+            this.ContextPasteFields.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.ContextPasteFields.ForeColor = System.Drawing.SystemColors.Control;
+            this.ContextPasteFields.Name = "ContextPasteFields";
+            this.ContextPasteFields.Size = new System.Drawing.Size(187, 22);
+            this.ContextPasteFields.Text = "Paste Selected Fields";
+            this.ContextPasteFields.ToolTipText = "Paste copied param def fields if any were copied.";
+            this.ContextPasteFields.Click += new System.EventHandler(this.ContextPasteFields_Click);
+            // 
+            // ContextCreateField
+            // 
+            this.ContextCreateField.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.ContextCreateField.ForeColor = System.Drawing.SystemColors.Control;
+            this.ContextCreateField.Name = "ContextCreateField";
+            this.ContextCreateField.Size = new System.Drawing.Size(187, 22);
+            this.ContextCreateField.Text = "Create Field";
+            this.ContextCreateField.ToolTipText = "Create a new param def field.";
+            this.ContextCreateField.Click += new System.EventHandler(this.ContextCreateField_Click);
+            // 
+            // MainToolStrip
+            // 
+            this.MainToolStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(41)))), ((int)(((byte)(41)))));
+            this.MainToolStrip.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.MainToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.StatusLabel});
+            this.MainToolStrip.Location = new System.Drawing.Point(0, 441);
+            this.MainToolStrip.Name = "MainToolStrip";
+            this.MainToolStrip.Size = new System.Drawing.Size(1215, 25);
+            this.MainToolStrip.TabIndex = 1;
+            // 
+            // StatusLabel
+            // 
+            this.StatusLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.StatusLabel.Name = "StatusLabel";
+            this.StatusLabel.Size = new System.Drawing.Size(0, 22);
             // 
             // MainForm
             // 
@@ -710,11 +734,14 @@
         private System.Windows.Forms.ToolStripMenuItem MenuCreateField;
         private System.Windows.Forms.ToolStripSeparator MenuFileSeparator1;
         private System.Windows.Forms.ToolStripMenuItem MenuExport;
-        private System.Windows.Forms.ToolStripMenuItem MenuDefToXml;
-        private System.Windows.Forms.ToolStripMenuItem MenuXmlToDef;
+        private System.Windows.Forms.ToolStripMenuItem MenuExportXml;
+        private System.Windows.Forms.ToolStripMenuItem MenuExportDef;
         private System.Windows.Forms.DataGridViewTextBoxColumn celltype;
         private System.Windows.Forms.DataGridViewTextBoxColumn celldisname;
         private System.Windows.Forms.DataGridViewTextBoxColumn celldescription;
+        private System.Windows.Forms.ToolStripMenuItem MenuImport;
+        private System.Windows.Forms.ToolStripMenuItem MenuImportText;
+        private System.Windows.Forms.ToolStripMenuItem MenuExportTxt;
     }
 }
 

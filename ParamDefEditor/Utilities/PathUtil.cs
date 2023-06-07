@@ -4,6 +4,8 @@ using System.IO;
 using System.Windows.Forms;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Utilities
 {
@@ -45,17 +47,29 @@ namespace Utilities
         public static string LogTxt = $"{Environment.CurrentDirectory}/log.txt";
 
         /// <summary>
+        /// The default initial directory used if none are specified.
+        /// </summary>
+        public static string DefaultInitialDirectory = "C:\\Users";
+
+        /// <summary>
+        /// The default file filter used if none are specified.
+        /// </summary>
+        public static string DefaultFilter = "All files (*.*)|*.*";
+
+        /// <summary>
         /// Get a single file from a user.
         /// </summary>
         /// <param name="initialDirectory">A string representing the path the dialog box should open in.</param>
         /// <param name="title">A string containing the title to display in the dialog box.</param>
+        /// <param name="filter">What filetypes should be shown in the "Files of type" filter.</param>
         /// <returns>A string representing the path to a file a user selects.</returns>
-        public static string GetFilePath(string initialDirectory = null, string title = null)
+        public static string GetFilePath(string initialDirectory = null, string title = null, string filter = null)
         {
             OpenFileDialog filePathDialog = new OpenFileDialog()
             {
-                InitialDirectory = initialDirectory ?? "C:\\Users",
-                Title = $"{title ?? "Select a file to open."}"
+                InitialDirectory = initialDirectory ?? DefaultInitialDirectory,
+                Title = title ?? "Select a file to open.",
+                Filter = filter ?? DefaultFilter,
             };
 
             return filePathDialog.ShowDialog() == DialogResult.OK ? filePathDialog.FileName : null;
@@ -72,9 +86,9 @@ namespace Utilities
         {
             SaveFileDialog saveDialog = new SaveFileDialog()
             {
-                InitialDirectory = initialDirectory ?? "C:\\Users",
-                Title = $"{title ?? "Select a location to save to."}",
-                Filter = $"{filter ?? "All files (*.*)|*.*"}"
+                InitialDirectory = initialDirectory ?? DefaultInitialDirectory,
+                Title = title ?? "Select a location to save to.",
+                Filter = filter ?? DefaultFilter
             };
 
             return saveDialog.ShowDialog() == DialogResult.OK ? saveDialog.FileName : null;
@@ -83,11 +97,19 @@ namespace Utilities
         /// <summary>
         /// Get a single folder from a user.
         /// </summary>
+        /// <param name="initialDirectory">A string representing the path the dialog box should open in.</param>
+        /// <param name="title">A string containing the title to display in the dialog box.</param>
         /// <returns>A string representing the path to a folder a user selects.</returns>
-        public static string GetFolderPath()
+        public static string GetFolderPath(string initialDirectory = null, string title = null)
         {
-            FolderBrowserDialog folderPathDialog = new FolderBrowserDialog();
-            return folderPathDialog.ShowDialog() == DialogResult.OK ? folderPathDialog.SelectedPath : null;
+            CommonOpenFileDialog folderPathDialog = new CommonOpenFileDialog()
+            {
+                InitialDirectory = initialDirectory ?? DefaultInitialDirectory,
+                Title = title ?? "Select a folder.",
+                IsFolderPicker = true,
+            };
+
+            return folderPathDialog.ShowDialog() == CommonFileDialogResult.Ok ? folderPathDialog.FileName : null;
         }
 
         /// <summary>
@@ -101,9 +123,9 @@ namespace Utilities
         {
             OpenFileDialog filePathDialog = new OpenFileDialog()
             {
-                InitialDirectory = initialDirectory ?? "C:\\Users",
-                Title = $"{title ?? "Select a file to open."}",
-                Filter = $"{filter ?? "All files (*.*)|*.*"}",
+                InitialDirectory = initialDirectory ?? DefaultInitialDirectory,
+                Title = title ?? "Select a file to open.",
+                Filter = filter ?? DefaultFilter,
                 Multiselect = true
             };
 

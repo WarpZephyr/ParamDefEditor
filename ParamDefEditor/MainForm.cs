@@ -275,72 +275,28 @@ namespace ParamDefEditor
             MessageBox.Show("Not yet supported.");
         }
 
-        private void MenuDefToXml_Click(object sender, EventArgs e)
+        private void MenuExportDef_Click(object sender, EventArgs e)
         {
-            string[] paths = PathUtil.GetFilePaths("C:\\Users", "Select Defs to export to Xml", "Def file (*.def)|*.def|All files (*.*)|*.*");
-            if (paths == null)
+            if (DefDGV.CurrentRow == null)
                 return;
 
-            int exist = 0;
-            int fail = 0;
-            foreach (string path in paths)
-            {
-                string newPath = $"{path}.xml";
-                if (File.Exists(newPath))
-                {
-                    exist++;
-                    continue;
-                }
-
-                try
-                {
-                    PARAMDEF paramdef = PARAMDEF.Read(path);
-                    foreach (var field in paramdef.Fields)
-                        if (field.InternalName == null)
-                            field.InternalName = field.DisplayName;
-                    paramdef.XmlSerialize($"{path}.xml");
-                }
-                catch (InvalidDataException ex)
-                {
-                    Logger.LogExceptionWithDate(ex, $"Failed to serialize {Path.GetFileName(path)} into xml.");
-                    fail++;
-                }
-            }
-
-            StatusLabel.Text = $"Exported {paths.Length - (exist + fail)} defs to xml, failed to export {fail} files, {exist} xmls already existed on the export path.";
+            UpdateExportStatus("def", ExportHandler(Exporter.ExportType.Def));
         }
 
-        private void MenuXmlToDef_Click(object sender, EventArgs e)
+        private void MenuExportXml_Click(object sender, EventArgs e)
         {
-            //MessageBox.Show("Currently broken.");
-            string[] paths = PathUtil.GetFilePaths("C:\\Users", "Select Xmls to export to Def", "Xml file (*.xml)|*.xml|All files (*.*)|*.*");
-            if (paths == null)
+            if (DefDGV.CurrentRow == null)
                 return;
 
-            int exist = 0;
-            int fail = 0;
-            foreach (string path in paths)
-            {
-                string newPath = $"{Path.GetDirectoryName(path)}\\{Path.GetFileNameWithoutExtension(path)}";
-                if (File.Exists(newPath))
-                {
-                    exist++;
-                    continue;
-                }
+            UpdateExportStatus("xml", ExportHandler(Exporter.ExportType.Xml));
+        }
 
-                try
-                {
-                    PARAMDEF paramdef = PARAMDEF.XmlDeserialize(path);
-                    paramdef.Write(newPath);
-                }
-                catch (InvalidDataException ex)
-                {
-                    Logger.LogExceptionWithDate(ex, $"Failed to deserialize {Path.GetFileName(path)} into def.");
-                    fail++;
-                }
-            }
+        private void MenuExportTxt_Click(object sender, EventArgs e)
+        {
+            if (DefDGV.CurrentRow == null)
+                return;
 
-            StatusLabel.Text = $"Exported {paths.Length - (exist + fail)} xmls to def, failed to export {fail} files, {exist} defs already existed on the export path.";
+            UpdateExportStatus("txt", ExportHandler(Exporter.ExportType.Txt));
         }
 
         private void ContextOpen_Click(object sender, EventArgs e)
@@ -506,21 +462,9 @@ namespace ParamDefEditor
             if (e.Control && e.KeyCode == Keys.O) MenuOpen_Click(sender, e);
             else if (e.Control && e.KeyCode == Keys.S) MenuSave_Click(sender, e);
             else if (e.Control && e.Shift && e.KeyCode == Keys.S) MenuSaveAll_Click(sender, e);
-            else if (e.Control && e.KeyCode == Keys.C) MenuClose_Click(sender, e);
-            else if (e.Control && e.Shift && e.KeyCode == Keys.C) MenuCloseAll_Click(sender, e);
+            else if (e.Control && e.KeyCode == Keys.D) MenuClose_Click(sender, e);
+            else if (e.Control && e.Shift && e.KeyCode == Keys.D) MenuCloseAll_Click(sender, e);
             else if (e.Control && e.KeyCode == Keys.N) MenuCreate_Click(sender, e);
-        }
-
-        private void FileDGV_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Control && e.KeyCode == Keys.C) MenuCopyDefs_Click(sender, e);
-            else if (e.Control && e.KeyCode == Keys.V) MenuPasteDefs_Click(sender, e);
-        }
-
-        private void DefDGV_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Control && e.KeyCode == Keys.C) MenuCopyFields_Click(sender, e);
-            else if (e.Control && e.KeyCode == Keys.V) MenuPasteFields_Click(sender, e);
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -597,6 +541,8 @@ namespace ParamDefEditor
                     PARAMDEF def;
                     if (path.EndsWith(".xml"))
                         def = PARAMDEF.XmlDeserialize(path);
+                    else if (path.EndsWith(".txt"))
+                        def = TxtSerializer.TxtDeserialize(File.ReadAllLines(path));
                     else
                         def = PARAMDEF.Read(path);
 
@@ -611,6 +557,33 @@ namespace ParamDefEditor
             }
 
             StatusLabel.Text = $"Loaded {count} defs out of {paths.Length} files.";
+        }
+
+        private int ExportHandler(Exporter.ExportType type)
+        {
+            string saveDir = PathUtil.GetFolderPath("C:\\Users", "Choose a folder to export to");
+            if (saveDir == null)
+                return -1;
+
+            int count = 0;
+
+            foreach (DataGridViewRow row in FileDGV.Rows)
+            {
+                DefWrapper def = row.Cells[0].Value as DefWrapper;
+                string outPath = $"{saveDir}\\{def.Name}";
+                PathUtil.Backup(outPath);
+                def.Def.Export(type, outPath);
+                count++;
+            }
+            return count;
+        }
+
+        private void UpdateExportStatus(string type, int count)
+        {
+            if (count > 0)
+                StatusLabel.Text = $"Exported {count} defs to {type}.";
+            else if (count == -1)
+                StatusLabel.Text = $"Canceled export to {type}.";
         }
     }
 }
