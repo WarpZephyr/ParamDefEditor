@@ -44,8 +44,6 @@
             this.MenuCloseAll = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuCreate = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuFileSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.MenuImport = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuImportText = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuExport = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuExportXml = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuExportDef = new System.Windows.Forms.ToolStripMenuItem();
@@ -81,6 +79,9 @@
             this.ContextCreateField = new System.Windows.Forms.ToolStripMenuItem();
             this.MainToolStrip = new System.Windows.Forms.ToolStrip();
             this.StatusLabel = new System.Windows.Forms.ToolStripLabel();
+            this.MenuImportDbp = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuImport = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuExportDbp = new System.Windows.Forms.ToolStripMenuItem();
             this.MainFormMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MainSplitContainer)).BeginInit();
             this.MainSplitContainer.Panel1.SuspendLayout();
@@ -198,32 +199,13 @@
             this.MenuFileSeparator1.Name = "MenuFileSeparator1";
             this.MenuFileSeparator1.Size = new System.Drawing.Size(191, 6);
             // 
-            // MenuImport
-            // 
-            this.MenuImport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.MenuImport.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuImportText});
-            this.MenuImport.ForeColor = System.Drawing.SystemColors.Control;
-            this.MenuImport.Name = "MenuImport";
-            this.MenuImport.Size = new System.Drawing.Size(194, 22);
-            this.MenuImport.Text = "Import";
-            this.MenuImport.ToolTipText = "Import various kinds of data into defs.";
-            // 
-            // MenuImportText
-            // 
-            this.MenuImportText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.MenuImportText.ForeColor = System.Drawing.SystemColors.Control;
-            this.MenuImportText.Name = "MenuImportText";
-            this.MenuImportText.Size = new System.Drawing.Size(180, 22);
-            this.MenuImportText.Text = "Text";
-            this.MenuImportText.ToolTipText = "Import dumped text back into defs.";
-            // 
             // MenuExport
             // 
             this.MenuExport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.MenuExport.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MenuExportXml,
             this.MenuExportDef,
+            this.MenuExportDbp,
             this.MenuExportTxt});
             this.MenuExport.ForeColor = System.Drawing.SystemColors.Control;
             this.MenuExport.Name = "MenuExport";
@@ -660,6 +642,37 @@
             this.StatusLabel.Name = "StatusLabel";
             this.StatusLabel.Size = new System.Drawing.Size(0, 22);
             // 
+            // MenuImportDbp
+            // 
+            this.MenuImportDbp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.MenuImportDbp.ForeColor = System.Drawing.SystemColors.Control;
+            this.MenuImportDbp.Name = "MenuImportDbp";
+            this.MenuImportDbp.Size = new System.Drawing.Size(180, 22);
+            this.MenuImportDbp.Text = "Dbp";
+            this.MenuImportDbp.ToolTipText = "Import PARAMDBP into PARAMDEF";
+            this.MenuImportDbp.Click += new System.EventHandler(this.MenuImportDbp_Click);
+            // 
+            // MenuImport
+            // 
+            this.MenuImport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.MenuImport.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuImportDbp});
+            this.MenuImport.ForeColor = System.Drawing.SystemColors.Control;
+            this.MenuImport.Name = "MenuImport";
+            this.MenuImport.Size = new System.Drawing.Size(194, 22);
+            this.MenuImport.Text = "Import";
+            this.MenuImport.ToolTipText = "Import various kinds of data into defs.";
+            // 
+            // MenuExportDbp
+            // 
+            this.MenuExportDbp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.MenuExportDbp.ForeColor = System.Drawing.SystemColors.Control;
+            this.MenuExportDbp.Name = "MenuExportDbp";
+            this.MenuExportDbp.Size = new System.Drawing.Size(180, 22);
+            this.MenuExportDbp.Text = "Dbp";
+            this.MenuExportDbp.ToolTipText = "Export loaded defs to dbp.";
+            this.MenuExportDbp.Click += new System.EventHandler(this.MenuExportDbp_Click);
+            // 
             // MainForm
             // 
             this.AllowDrop = true;
@@ -739,9 +752,10 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn celltype;
         private System.Windows.Forms.DataGridViewTextBoxColumn celldisname;
         private System.Windows.Forms.DataGridViewTextBoxColumn celldescription;
-        private System.Windows.Forms.ToolStripMenuItem MenuImport;
-        private System.Windows.Forms.ToolStripMenuItem MenuImportText;
         private System.Windows.Forms.ToolStripMenuItem MenuExportTxt;
+        private System.Windows.Forms.ToolStripMenuItem MenuImport;
+        private System.Windows.Forms.ToolStripMenuItem MenuImportDbp;
+        private System.Windows.Forms.ToolStripMenuItem MenuExportDbp;
     }
 }
 

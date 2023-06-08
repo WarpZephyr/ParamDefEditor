@@ -6,6 +6,8 @@ using Utilities;
 using CustomForms;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Security.Cryptography;
+using System.Diagnostics.Eventing.Reader;
 
 namespace ParamDefEditor
 {
@@ -275,12 +277,47 @@ namespace ParamDefEditor
             MessageBox.Show("Not yet supported.");
         }
 
+        private void MenuImportDbp_Click(object sender, EventArgs e)
+        {
+            string[] paths = PathUtil.GetFilePaths("C:\\Users", "Select dbps to import into defs", "Dbp (*.dbp)|*.dbp");
+            if (paths == null) 
+            {
+                StatusLabel.Text = "Canceled dbp import operation.";
+                return;
+            }
+
+            int count = 0;
+            foreach (string path in paths)
+            {
+                try
+                {
+                    var defWrapper = new DefWrapper(Importer.Import(path, Importer.ImportType.Dbp), $"{Path.GetDirectoryName(path)}\\{Path.GetFileNameWithoutExtension(path)}.def");
+                    FileDGV.Rows.Add(new object[] { defWrapper, defWrapper.Type });
+                    count++;
+                }
+                catch{}
+            }
+
+            if (count > 0)
+                StatusLabel.Text = $"Imported {count} dbps into defs.";
+            else
+                StatusLabel.Text = $"Failed to import any of the {paths.Length} selected files into def.";
+        }
+
         private void MenuExportDef_Click(object sender, EventArgs e)
         {
             if (DefDGV.CurrentRow == null)
                 return;
 
             UpdateExportStatus("def", ExportHandler(Exporter.ExportType.Def));
+        }
+
+        private void MenuExportDbp_Click(object sender, EventArgs e)
+        {
+            if (DefDGV.CurrentRow == null)
+                return;
+
+            UpdateExportStatus("dbp", ExportHandler(Exporter.ExportType.Dbp));
         }
 
         private void MenuExportXml_Click(object sender, EventArgs e)
@@ -543,6 +580,8 @@ namespace ParamDefEditor
                         def = PARAMDEF.XmlDeserialize(path);
                     else if (path.EndsWith(".txt"))
                         def = TxtSerializer.TxtDeserialize(File.ReadAllLines(path));
+                    else if (path.EndsWith(".dbp"))
+                        def = Importer.Import(path, Importer.ImportType.Dbp);
                     else
                         def = PARAMDEF.Read(path);
 

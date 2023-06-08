@@ -8,8 +8,16 @@ using System.Xml;
 
 namespace ParamDefEditor
 {
+    /// <summary>
+    /// A txt serializer for paramdef to more easily mass-edit it.
+    /// </summary>
     public static class TxtSerializer
     {
+        /// <summary>
+        /// Serialize paramdef to txt.
+        /// </summary>
+        /// <param name="def">The def to serialize.</param>
+        /// <returns>A string array of every serialized line.</returns>
         public static string[] TxtSerialize(this PARAMDEF def)
         {
             int count = def.Fields.Count;
@@ -77,6 +85,12 @@ namespace ParamDefEditor
             return lines.ToArray();
         }
 
+        /// <summary>
+        /// Deserialize a serialized string array of paramdef lines.
+        /// </summary>
+        /// <param name="lines">A collection of strings that can be accessed via index.</param>
+        /// <returns>A new PARAMDEF.</returns>
+        /// <exception cref="InvalidDataException">Something was not right with the data.</exception>
         public static PARAMDEF TxtDeserialize(IList<string> lines)
         {
             int index = 0;

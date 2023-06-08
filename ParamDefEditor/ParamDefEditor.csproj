@@ -94,6 +94,7 @@
     <Compile Include="DefWrapper.cs" />
     <Compile Include="Exporter.cs" />
     <Compile Include="FieldWrapper.cs" />
+    <Compile Include="Importer.cs" />
     <Compile Include="NewDefForm.cs">
       <SubType>Form</SubType>
     </Compile>

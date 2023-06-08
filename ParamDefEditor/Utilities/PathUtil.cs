@@ -54,7 +54,7 @@ namespace Utilities
         /// <summary>
         /// The default file filter used if none are specified.
         /// </summary>
-        public static string DefaultFilter = "All files (*.*)|*.*";
+        public static string DefaultFilter = "All files (*)|*";
 
         /// <summary>
         /// Get a single file from a user.

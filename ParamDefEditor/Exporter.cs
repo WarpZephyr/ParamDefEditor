@@ -14,6 +14,7 @@ namespace ParamDefEditor
         public enum ExportType
         {
             Def,
+            Dbp,
             Xml,
             Txt
         }
@@ -27,6 +28,9 @@ namespace ParamDefEditor
 
             switch (type)
             {
+                case ExportType.Dbp:
+                    new PARAMDBP(def).Write(outPath);
+                    break;
                 case ExportType.Def:
                     def.Write(outPath);
                     break;
@@ -56,6 +60,7 @@ namespace ParamDefEditor
             switch (type)
             {
                 case ExportType.Def: return ".def";
+                case ExportType.Dbp: return ".dbp";
                 case ExportType.Xml: return ".xml";
                 case ExportType.Txt: return ".txt";
                 default: throw new NotSupportedException($"{nameof(ExportType)} {type} is not supported for the GetExtension operation.");
