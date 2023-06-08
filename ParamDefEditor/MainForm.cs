@@ -610,7 +610,7 @@ namespace ParamDefEditor
             {
                 DefWrapper def = row.Cells[0].Value as DefWrapper;
                 string outPath = $"{saveDir}\\{def.Name}";
-                PathUtil.Backup(outPath);
+                PathUtil.Backup(Exporter.GetOutPath(outPath, type));
                 def.Def.Export(type, outPath);
                 count++;
             }
