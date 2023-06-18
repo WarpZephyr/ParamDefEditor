@@ -36,8 +36,10 @@ namespace ParamDefEditor
                     break;
                 case ExportType.Xml:
                     foreach (var field in def.Fields)
-                        if (field.InternalName == null || field.InternalName == "")
-                            field.InternalName = field.DisplayName;
+                    {
+                        field.Description = Serialization.ValidateString(field.Description);
+                        field.DisplayName = Serialization.ValidateString(field.DisplayName);
+                    }
                     def.XmlSerialize(outPath);
                     break;
                 case ExportType.Txt:

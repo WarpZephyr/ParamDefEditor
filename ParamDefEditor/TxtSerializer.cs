@@ -33,10 +33,10 @@ namespace ParamDefEditor
             lines.Add($"FieldCount: {count}");
             lines.Add("\n[DisplayName]");
             foreach (var field in def.Fields)
-                lines.Add(field.DisplayName ?? "null");
+                lines.Add(Serialization.ValidateString(field.DisplayName ?? "null"));
             lines.Add("\n[InternalName]");
             foreach (var field in def.Fields)
-                lines.Add(field.InternalName ?? "null");
+                lines.Add(Serialization.ValidateString(field.InternalName ?? "null"));
             lines.Add("\n[DisplayType]");
             foreach (var field in def.Fields)
                 lines.Add(field.DisplayType.ToString());
@@ -45,10 +45,10 @@ namespace ParamDefEditor
                 lines.Add(field.InternalType ?? field.DisplayType.ToString());
             lines.Add("\n[DisplayFormat]");
             foreach (var field in def.Fields)
-                lines.Add(field.DisplayFormat == "" ? "null" : ParamUtil.GetDefaultFormat(field.DisplayType));
+                lines.Add(field.DisplayFormat = field.DisplayFormat == null ? "null" : ParamUtil.GetDefaultFormat(field.DisplayType));
             lines.Add("\n[Description]");
             foreach (var field in def.Fields)
-                lines.Add(field.Description ?? "null");
+                lines.Add(Serialization.ValidateString(field.Description ?? "null"));
             lines.Add("\n[ArrayLength]");
             foreach (var field in def.Fields)
                 lines.Add($"{field.ArrayLength}" ?? "null");
@@ -119,10 +119,8 @@ namespace ParamDefEditor
             index++;
             for (int i = 0; i < count; i++)
             {
-                if (lines[index] != "null" && lines[index] != "")
+                if (lines[index] != "null")
                     def.Fields[i].DisplayName = lines[index];
-                else
-                    def.Fields[i].DisplayName = "";
                 index++;
             }
             while (lines[index] == "")
@@ -134,10 +132,8 @@ namespace ParamDefEditor
             index++;
             for (int i = 0; i < count; i++)
             {
-                if (lines[index] != "null" && lines[index] != "")
+                if (lines[index] != "null")
                     def.Fields[i].InternalName = lines[index];
-                else
-                    def.Fields[i].InternalName = "";
                 index++;
             }
             while (lines[index] == "")
@@ -181,8 +177,6 @@ namespace ParamDefEditor
             {
                 if (lines[index] != "null" && lines[index] != "")
                     def.Fields[i].DisplayFormat = lines[index];
-                else if (ParamUtil.IsArrayType(def.Fields[i].DisplayType))
-                    def.Fields[i].DisplayFormat = "";
                 else
                     def.Fields[i].DisplayFormat = ParamUtil.GetDefaultFormat(def.Fields[i].DisplayType);
                 index++;
@@ -196,10 +190,8 @@ namespace ParamDefEditor
             index++;
             for (int i = 0; i < count; i++)
             {
-                if (lines[index] != "null" && lines[index] != "")
+                if (lines[index] != "null")
                     def.Fields[i].Description = lines[index];
-                else
-                    def.Fields[i].Description = "";
                 index++;
             }
             while (lines[index] == "")
@@ -245,7 +237,7 @@ namespace ParamDefEditor
             index++;
             for (int i = 0; i < count; i++)
             {
-                if (lines[index] != "null" && lines[index] != "")
+                if (lines[index] != "null" && lines[index] != "" && !ParamUtil.IsArrayType(def.Fields[i].DisplayType))
                     def.Fields[i].Default = ParamUtil.ConvertValue(def.Fields[i].DisplayType, lines[index], def.Fields[i].BitSize, def.Fields[i].ArrayLength);
                 else
                     def.Fields[i].Default = ParamUtil.GetDefaultDefault(def, def.Fields[i].DisplayType);
@@ -260,8 +252,17 @@ namespace ParamDefEditor
             index++;
             for (int i = 0; i < count; i++)
             {
-                if (lines[index] != "null" && lines[index] != "")
-                    def.Fields[i].Minimum = ParamUtil.ConvertValue(def.Fields[i].DisplayType, lines[index], def.Fields[i].BitSize, def.Fields[i].ArrayLength);
+                if (lines[index] != "null" && lines[index] != "" && !ParamUtil.IsArrayType(def.Fields[i].DisplayType))
+                {
+                    try
+                    {
+                        def.Fields[i].Minimum = ParamUtil.ConvertValue(def.Fields[i].DisplayType, lines[index], def.Fields[i].BitSize, def.Fields[i].ArrayLength);
+                    }
+                    catch
+                    {
+                        def.Fields[i].Maximum = ParamUtil.GetDefaultMaximum(def, def.Fields[i].DisplayType);
+                    }
+                }
                 else
                     def.Fields[i].Minimum = ParamUtil.GetDefaultMinimum(def, def.Fields[i].DisplayType);
                 index++;
@@ -275,8 +276,17 @@ namespace ParamDefEditor
             index++;
             for (int i = 0; i < count; i++)
             {
-                if (lines[index] != "null" && lines[index] != "")
-                    def.Fields[i].Maximum = ParamUtil.ConvertValue(def.Fields[i].DisplayType, lines[index], def.Fields[i].BitSize, def.Fields[i].ArrayLength);
+                if (lines[index] != "null" && lines[index] != "" && !ParamUtil.IsArrayType(def.Fields[i].DisplayType))
+                {
+                    try
+                    {
+                        def.Fields[i].Maximum = ParamUtil.ConvertValue(def.Fields[i].DisplayType, lines[index], def.Fields[i].BitSize, def.Fields[i].ArrayLength);
+                    }
+                    catch
+                    {
+                        def.Fields[i].Maximum = ParamUtil.GetDefaultMaximum(def, def.Fields[i].DisplayType);
+                    }
+                }
                 else
                     def.Fields[i].Maximum = ParamUtil.GetDefaultMaximum(def, def.Fields[i].DisplayType);
                 index++;
@@ -290,7 +300,7 @@ namespace ParamDefEditor
             index++;
             for (int i = 0; i < count; i++)
             {
-                if (lines[index] != "null" && lines[index] != "")
+                if (lines[index] != "null" && lines[index] != "" && !ParamUtil.IsArrayType(def.Fields[i].DisplayType))
                     def.Fields[i].Increment = ParamUtil.ConvertValue(def.Fields[i].DisplayType, lines[index], def.Fields[i].BitSize, def.Fields[i].ArrayLength);
                 else
                     def.Fields[i].Increment = ParamUtil.GetDefaultIncrement(def, def.Fields[i].DisplayType);
@@ -320,7 +330,7 @@ namespace ParamDefEditor
             index++;
             for (int i = 0; i < count; i++)
             {
-                if (lines[i] != "null" && lines[index] != "")
+                if (lines[index] != "null" && lines[index] != "")
                     def.Fields[i].SortID = int.Parse(lines[index]);
                 else
                     def.Fields[i].SortID = 0;
@@ -335,10 +345,8 @@ namespace ParamDefEditor
             index++;
             for (int i = 0; i < count; i++)
             {
-                if (lines[index] != "null" && lines[index] != "")
+                if (lines[index] != "null")
                     def.Fields[i].UnkB8 = lines[index];
-                else
-                    def.Fields[i].UnkB8 = "";
                 index++;
             }
             while (lines[index] == "")
@@ -350,10 +358,8 @@ namespace ParamDefEditor
             index++;
             for (int i = 0; i < count; i++)
             {
-                if (lines[index] != "null" && lines[index] != "")
+                if (lines[index] != "null")
                     def.Fields[i].UnkC0 = lines[index];
-                else
-                    def.Fields[i].UnkC0 = "";
                 index++;
             }
             while (lines[index] == "")
@@ -365,10 +371,8 @@ namespace ParamDefEditor
             index++;
             for (int i = 0; i < count; i++)
             {
-                if (lines[index] != "null" && lines[index] != "")
+                if (lines[index] != "null")
                     def.Fields[i].UnkC8 = lines[index];
-                else
-                    def.Fields[i].UnkC8 = "";
                 index++;
             }
 

@@ -6,6 +6,8 @@ using Microsoft.WindowsAPICodePack.Dialogs;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Diagnostics;
 
 namespace Utilities
 {
@@ -14,37 +16,37 @@ namespace Utilities
         /// <summary>
         /// A string representing the path to the folder the program is running from.
         /// </summary>
-        public static string EnvFolderPath = $"{Environment.CurrentDirectory}/";
+        public static string EnvFolderPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
         /// <summary>
         /// A string representing the path to a generic resource folder named "res" inside of the directory the program is running from.
         /// </summary>
-        public static string ResFolderPath = $"{Environment.CurrentDirectory}/res/";
+        public static string ResFolderPath = $"{EnvFolderPath}\\res";
 
         /// <summary>
         /// A string representing the path to a generic resource folder named "Resource" inside of the directory the program is running from.
         /// </summary>
-        public static string ResourceFolderPath = $"{Environment.CurrentDirectory}/Resource/";
+        public static string ResourceFolderPath = $"{EnvFolderPath}\\Resource";
 
         /// <summary>
         /// A string representing the path to a generic resource folder named "Resources" inside of the directory the program is running from.
         /// </summary>
-        public static string ResourcesFolderPath = $"{Environment.CurrentDirectory}/Resources/";
+        public static string ResourcesFolderPath = $"{EnvFolderPath}\\Resources";
 
         /// <summary>
         /// A string representing the path to a generic stacktrace log file named "stacktrace.log" inside of the directory the program is running from.
         /// </summary>
-        public static string StackTraceLog = $"{Environment.CurrentDirectory}/stacktrace.log";
+        public static string StackTraceLog = $"{EnvFolderPath}\\stacktrace.log";
 
         /// <summary>
         /// A string representing the path to a generic log file named "log.log" inside of the directory the program is running from.
         /// </summary>
-        public static string Log = $"{Environment.CurrentDirectory}/log.log";
+        public static string Log = $"{EnvFolderPath}\\log.log";
 
         /// <summary>
         /// A string representing the path to a generic log file named "log.txt" inside of the directory the program is running from.
         /// </summary>
-        public static string LogTxt = $"{Environment.CurrentDirectory}/log.txt";
+        public static string LogTxt = $"{EnvFolderPath}\\log.txt";
 
         /// <summary>
         /// The default initial directory used if none are specified.
@@ -274,6 +276,55 @@ namespace Utilities
                     File.Copy(file, Path.Combine(newPath, Path.GetFileName(file)));
                 }
             }
+        }
+		
+		/// <summary>
+        /// Open a folder on the specified path in explorer.exe.
+        /// </summary>
+        /// <param name="folderPath">The path to the folder to open.</param>
+        /// <returns>Whether or not opening the folder was successful.</returns>
+        public static bool OpenFolder(string folderPath)
+        {
+            if (Directory.Exists(folderPath))
+            {
+                ProcessStartInfo startInfo = new ProcessStartInfo
+                {
+                    Arguments = folderPath,
+                    FileName = "explorer.exe"
+                };
+
+                Process.Start(startInfo);
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Open the "res" folder in the current program.
+        /// </summary>
+        /// <returns>Whether or not opening the folder was successful.</returns>
+        public static bool OpenRes()
+        {
+            return OpenFolder(ResFolderPath);
+        }
+
+        /// <summary>
+        /// Open the "Resource" folder in the current program.
+        /// </summary>
+        /// <returns>Whether or not opening the folder was successful.</returns>
+        public static bool OpenResource()
+        {
+            return OpenFolder(ResourceFolderPath);
+        }
+
+        /// <summary>
+        /// Open the "Resources" folder in the current program.
+        /// </summary>
+        /// <returns>Whether or not opening the folder was successful.</returns>
+        public static bool OpenResources()
+        {
+            return OpenFolder(ResourcesFolderPath);
         }
     }
 }

@@ -38,6 +38,11 @@ namespace ParamDefEditor
         /// </summary>
         private List<FieldWrapper> CopiedFields;
 
+        /// <summary>
+        /// The names of the currently loaded defs.
+        /// </summary>
+        private List<string> LoadedNames = new List<string>();
+
         public MainForm()
         {
             InitializeComponent();
@@ -129,6 +134,9 @@ namespace ParamDefEditor
                 return;
 
             string name = FileDGV.CurrentRow.Cells[0].Value.ToString();
+            for (int i = 0; i < LoadedNames.Count; i++)
+                if (name.ToLower().Contains(LoadedNames[i]))
+                    LoadedNames.RemoveAt(i);
             FileDGV.Rows.Remove(FileDGV.CurrentRow);
             if (FileDGV.Rows.Count == 0)
                 DefDGV.Rows.Clear();
@@ -145,6 +153,7 @@ namespace ParamDefEditor
             if (!close)
                 return;
 
+            LoadedNames.Clear();
             FileDGV.Rows.Clear();
             DefDGV.Rows.Clear();
             StatusLabel.Text = "Removed all defs.";
@@ -568,26 +577,44 @@ namespace ParamDefEditor
         private void FileHandler(string[] paths)
         {
             int count = 0;
+            bool ask = true;
+            bool skip = true;
             foreach (string path in paths)
             {
                 if (!File.Exists(path))
                     continue;
 
+                string name = Path.GetFileNameWithoutExtension(path);
+                if (skip && NameExists(name))
+                {
+                    if (ask)
+                    {
+                        bool question = FormUtil.ShowQuestionDialog($"The def {name} seems to already have been loaded, do you want to skip already existing defs?", "Skip reloading existing defs");
+                        skip = question;
+                        ask = false;
+                    }
+
+                    continue;
+                }
+                LoadedNames.Add(name.ToLower());
+
+                PARAMDEF def;
+                if (path.EndsWith(".xml"))
+                    def = PARAMDEF.XmlDeserialize(path);
+                else if (path.EndsWith(".txt"))
+                    def = TxtSerializer.TxtDeserialize(File.ReadAllLines(path));
+                else if (path.EndsWith(".dbp"))
+                    def = Importer.Import(path, Importer.ImportType.Dbp);
+                else
+                    def = PARAMDEF.Read(path);
+
+                var defWrapper = new DefWrapper(def, path);
+                FileDGV.Rows.Add(new object[] { defWrapper, defWrapper.Type });
+                count++;
+
                 try
                 {
-                    PARAMDEF def;
-                    if (path.EndsWith(".xml"))
-                        def = PARAMDEF.XmlDeserialize(path);
-                    else if (path.EndsWith(".txt"))
-                        def = TxtSerializer.TxtDeserialize(File.ReadAllLines(path));
-                    else if (path.EndsWith(".dbp"))
-                        def = Importer.Import(path, Importer.ImportType.Dbp);
-                    else
-                        def = PARAMDEF.Read(path);
-
-                    var defWrapper = new DefWrapper(def, path);
-                    FileDGV.Rows.Add(new object[] { defWrapper, defWrapper.Type });
-                    count++;
+                    
                 }
                 catch
                 {
@@ -623,6 +650,16 @@ namespace ParamDefEditor
                 StatusLabel.Text = $"Exported {count} defs to {type}.";
             else if (count == -1)
                 StatusLabel.Text = $"Canceled export to {type}.";
+        }
+
+        private bool NameExists(string name)
+        {
+            if (LoadedNames.Count == 0)
+                return false;
+            foreach (string str in LoadedNames)
+                if (str != null && str.ToLower().Equals(name.ToLower()))
+                    return true;
+            return false;
         }
     }
 }
